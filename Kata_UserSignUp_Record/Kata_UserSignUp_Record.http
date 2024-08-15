@@ -1,0 +1,6 @@
+@Kata_UserSignUp_Record_HostAddress = http://localhost:5293
+
+GET {{Kata_UserSignUp_Record_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
