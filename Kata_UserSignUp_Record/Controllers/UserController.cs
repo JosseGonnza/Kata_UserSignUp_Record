@@ -1,5 +1,7 @@
+using Kata_UserSignUp_Record.Models;
+using Kata_UserSignUp_Record.Repositories;
+using Kata_UserSignUp_Record.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace Kata_UserSignUp_Record.Controllers;
 
@@ -33,54 +35,3 @@ public class UserController : ControllerBase
     }
 
 }
-
-public class FakeRepository
-{
-    private List<User> users = new List<User>();
-
-    public void Save(User user) => users.Add(user);
-
-    public List<User> GetAll() => users;
-}
-
-public record User(Guid Id, Email Email, Password Password);
-
-public class Email
-{
-    public string Value { get; }
-
-    public Email(string value)
-    {
-        Value = value;
-    }
-
-    public static Email Create(string email)
-    {
-        var emailValidator = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-
-        if(!Regex.IsMatch(email, emailValidator))
-            throw new Exception(email);
-
-        return new Email(email);
-    }
-}
-
-public class Password
-{
-    public string Value { get; }
-
-    private Password(string value)
-    {
-        Value = value;
-    }
-
-    public static Password Create(string password)
-    {
-        if (password.Length < 8 || !password.Contains('_'))
-            throw new ArgumentException(password);
-
-        return new Password(password);
-    }
-}
-
-public record UserRequest(string Email, string Password);
