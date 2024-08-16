@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser(UserRequest request)
     {
-        User user = new User(Guid.NewGuid(), request.Email, request.Password);
+        User user = new User(Guid.NewGuid(), request.Email, Password.Create(request.Password));
         repository.Save(user);
         return base.Accepted(user);
     }
@@ -38,6 +38,24 @@ public class FakeRepository
     public List<User> GetAll() => users;
 }
 
-public record User(Guid Id, string Email, string Password);
+public record User(Guid Id, string Email, Password Password);
+
+public class Password
+{
+    public string Value { get; }
+
+    private Password(string value)
+    {
+        Value = value;
+    }
+
+    public static Password Create(string password)
+    {
+        if (password.Length < 8 || !password.Contains('_'))
+            throw new ArgumentException(password);
+
+        return new Password(password);
+    }
+}
 
 public record UserRequest(string Email, string Password);
