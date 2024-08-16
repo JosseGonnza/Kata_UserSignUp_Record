@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Kata_UserSignUp_Record.Controllers;
+using Kata_UserSignUp_Record.ValueObjects;
 
 namespace UserTestRecord
 {

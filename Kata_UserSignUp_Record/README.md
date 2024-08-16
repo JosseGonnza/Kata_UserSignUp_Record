@@ -1,24 +1,24 @@
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=9df2ea&animation=fadeIn&height=120&section=header"/>
+ï»¿<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=9df2ea&animation=fadeIn&height=120&section=header"/>
 
 # User Registration kata
-Complete el caso de uso RegisterUser cumpliendo los requisitos que se indican a continuación.
+Complete el caso de uso RegisterUser cumpliendo los requisitos que se indican a continuaciÃ³n.
 
 ## Objetivo
-Como Usuario quiero registrarme a la plataforma proporcionando un email y contraseña.
+Como Usuario quiero registrarme a la plataforma proporcionando un email y contraseÃ±a.
 
 ## Requisitos
-- Devuelve el usuario recién creado ?
-- La contraseña debe cumplir los requisitos de seguridad: ?
-  - Tener más de 8 caracteres
-  - Contener un guión bajo
-- El Id de usuario debe ser aleatorio y único ?
-- El email debe ser un email válido
-- El correo electrónico no puede ser utilizado por otro usuario
+- Devuelve el usuario reciÃ©n creado âœ…
+- La contraseÃ±a debe cumplir los requisitos de seguridad: âœ…
+  - Tener mÃ¡s de 8 caracteres
+  - Contener un guiÃ³n bajo
+- El Id de usuario debe ser aleatorio y Ãºnico âœ…
+- El email debe ser un email vÃ¡lido âœ…
+- El correo electrÃ³nico no puede ser utilizado por otro usuario âœ…
 
 
 ## Recuerde
 - Prima la sencillez a la hora de resolver el problema
-- Escriba la cantidad mínima de código
-- Intenta refactorizar el código
+- Escriba la cantidad mÃ­nima de cÃ³digo
+- Intenta refactorizar el cÃ³digo
 
 <img src="https://raw.githubusercontent.com/matfantinel/matfantinel/master/waves.svg" width="100%" height="100">
