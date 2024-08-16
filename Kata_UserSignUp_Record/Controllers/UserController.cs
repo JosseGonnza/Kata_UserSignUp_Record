@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Kata_UserSignUp_Record.Controllers;
 
@@ -16,7 +17,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser(UserRequest request)
     {
-        User user = new User(Guid.NewGuid(), request.Email, Password.Create(request.Password));
+        User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
         repository.Save(user);
         return base.Accepted(user);
     }
@@ -38,7 +39,27 @@ public class FakeRepository
     public List<User> GetAll() => users;
 }
 
-public record User(Guid Id, string Email, Password Password);
+public record User(Guid Id, Email Email, Password Password);
+
+public class Email
+{
+    public string Value { get; }
+
+    public Email(string value)
+    {
+        Value = value;
+    }
+
+    public static Email Create(string email)
+    {
+        var emailValidator = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
+        if(!Regex.IsMatch(email, emailValidator))
+            throw new Exception(email);
+
+        return new Email(email);
+    }
+}
 
 public class Password
 {
