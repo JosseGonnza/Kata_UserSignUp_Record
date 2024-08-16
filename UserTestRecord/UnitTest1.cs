@@ -24,5 +24,15 @@ namespace UserTestRecord
 
             password.Value.Should().Be(value);
         }
+
+        [Fact(DisplayName = "Should be a valid email format")]
+        public void should_be_a_valid_email_format()
+        {
+            var value = "test@tets.com";
+
+            Email email = Email.Create(value);
+
+            email.Value.Should().Be(value);
+        }
     }
 }

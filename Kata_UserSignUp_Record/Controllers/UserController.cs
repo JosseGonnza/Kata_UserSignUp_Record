@@ -18,7 +18,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(UserRequest request)
     {
-        User user = new User(Guid.NewGuid(), request.Email, Password.Create(request.Password));
+        User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
         _repository.Save(user);
 
         return base.Accepted(user);
@@ -37,7 +37,27 @@ public class FakeUserRepository
     public List<User> GetAll() => users;
 }
 
-public record User(Guid Id, string Email, Password Password);
+public record User(Guid Id, Email Email, Password Password);
+
+public class Email
+{
+    public string Value { get; }
+
+    private Email(string value)
+    {
+        Value = value;
+    }
+
+    public static Email Create(string email)
+    {
+        var emailValidation = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
+        if (!Regex.IsMatch(email, emailValidation))
+            throw new ArgumentException(email);
+
+        return new Email(email);
+    }
+}
 
 public class Password
 {
