@@ -18,6 +18,10 @@ public class UserController : ControllerBase
     public async Task<IActionResult> CreateUser(UserRequest request)
     {
         User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
+
+        if (repository.GetAll().Any(u => u.Email.Value == request.Email))
+            return BadRequest("El email ya existe.");
+
         repository.Save(user);
         return base.Accepted(user);
     }
