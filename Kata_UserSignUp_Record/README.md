@@ -7,13 +7,13 @@ Complete el caso de uso RegisterUser cumpliendo los requisitos que se indican a 
 Como Usuario quiero registrarme a la plataforma proporcionando un email y contraseña.
 
 ## Requisitos
-- Devuelve el usuario recién creado ✅
-- La contraseña debe cumplir los requisitos de seguridad: ✅
+- Devuelve el usuario recién creado 
+- La contraseña debe cumplir los requisitos de seguridad: 
   - Tener más de 8 caracteres
   - Contener un guión bajo
-- El Id de usuario debe ser aleatorio y único ✅
-- El email debe ser un email válido ✅
-- El correo electrónico no puede ser utilizado por otro usuario ✅
+- El Id de usuario debe ser aleatorio y único 
+- El email debe ser un email válido 
+- El correo electrónico no puede ser utilizado por otro usuario 
 
 
 ## Recuerde
