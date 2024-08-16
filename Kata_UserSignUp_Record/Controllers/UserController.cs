@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Kata_UserSignUp_Record.Controllers;
 
@@ -16,17 +17,18 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(UserRequest request)
     {
-        User user = new User(Guid.NewGuid(), request.Email, Password.Create(request.Password));
+        User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
+
+        if (repository.GetAll().Any(u => u.Email.Value == request.Email))
+            return BadRequest("El email " + request.Email + " ya existe.");
+
         repository.Save(user);
 
         return Accepted(user);
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllUsers()
-    {
-        return Ok(repository.GetAll());
-    }
+    public async Task<IActionResult> GetAllUsers() => Ok(repository.GetAll());
 }
 
 public class FakeUserRepository
@@ -47,14 +49,34 @@ public class FakeUserRepository
 public class User
 {
     public Guid Id { get; private set; }
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
     public Password Password { get; private set; }
 
-    public User(Guid id, string email, Password password)
+    public User(Guid id, Email email, Password password)
     {
         Id = id;
         Email = email;
         Password = password;
+    }
+}
+
+public class Email
+{
+    public string Value { get; }
+
+    private Email(string email)
+    {
+        Value = email;
+    }
+
+    public static Email Create(string email)
+    {
+        var validationEmail = "^[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
+
+        if (!Regex.IsMatch(email, validationEmail))
+            throw new ArgumentException(email);
+
+        return new Email(email);
     }
 }
 

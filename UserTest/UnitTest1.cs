@@ -24,5 +24,15 @@ namespace UserTest
 
             password.password.Should().Be(value);
         }
+
+        [Fact(DisplayName = "Should be a valid email")]
+        public void should_be_a_valid_email()
+        {
+            var value = "test@test.com";
+
+            var email = Email.Create(value);
+
+            email.Value.Should().Be(value);
+        }
     }
 }
