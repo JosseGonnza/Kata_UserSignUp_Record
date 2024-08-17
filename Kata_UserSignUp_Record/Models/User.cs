@@ -2,4 +2,20 @@
 
 namespace Kata_UserSignUp_Record.Models;
 
-public record User(Guid Id, Email Email, Password Password);
+public class User
+{
+    public Guid Id { get; private set; }
+    public Email Email { get; private set; }
+    public Password Password { get; private set; }
+
+    public User(Guid id, Email email, Password password)
+    {
+        Id = id;
+        Email = email;
+        Password = password;
+    }
+
+    public User()
+    {
+    }
+}

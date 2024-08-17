@@ -1,7 +1,8 @@
+using Kata_UserSignUp_Record.Context;
 using Kata_UserSignUp_Record.Models;
-using Kata_UserSignUp_Record.Repositories;
 using Kata_UserSignUp_Record.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kata_UserSignUp_Record.Controllers;
 
@@ -9,29 +10,34 @@ namespace Kata_UserSignUp_Record.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly FakeRepository repository;
+    private readonly AppDbContext _appDbContext;
 
-    public UserController(FakeRepository repository)
+    public UserController(AppDbContext appDbContext)
     {
-        this.repository = repository;
+        _appDbContext = appDbContext;
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(UserRequest request)
+    public async Task<ActionResult<User>> CreateUser([FromBody] UserRequest request)
     {
         User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
 
-        if (repository.GetAll().Any(u => u.Email.Value == request.Email))
-            return BadRequest("El email ya existe.");
+        //var existingUser = _appDbContext.Users.FirstOrDefault(u => u.Email.Value == request.Email);
+        //if (existingUser != null)
+        //{
+        //    return BadRequest("El email ya existe.");
+        //}
 
-        repository.Save(user);
-        return base.Accepted(user);
+        _appDbContext.Users.Add(user);
+        await _appDbContext.SaveChangesAsync();
+
+        return CreatedAtAction("CreateUser", new { id = user.Id }, user);
     }
 
     [HttpGet]
-    public async Task<List<User>> GetAllUsers()
+    public async Task<ActionResult<List<User>>> GetAllUsers()
     {
-        return repository.GetAll();
+        return await _appDbContext.Users.ToListAsync();
     }
 
 }

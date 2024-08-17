@@ -1,0 +1,14 @@
+networks:
+  mynetworkapi:
+
+services:
+    kataUserRegister:
+        container_name: kataRegister-docker
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+            - 8050:1433
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=MyPassword*1234
+        networks:
+            - mynetworkapi
