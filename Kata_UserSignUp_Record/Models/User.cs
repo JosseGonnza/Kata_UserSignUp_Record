@@ -18,4 +18,14 @@ public class User
     public User()
     {
     }
+
+    public void UpdateEmail(Email newEmail)
+    {
+        Email = newEmail;
+    }
+
+    public void UpdatePassword(Password newPassword)
+    {
+        Password = newPassword;
+    }
 }

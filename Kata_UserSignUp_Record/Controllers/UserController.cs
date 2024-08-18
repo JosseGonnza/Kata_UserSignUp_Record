@@ -40,4 +40,57 @@ public class UserController : ControllerBase
         return await _appDbContext.Users.ToListAsync();
     }
 
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetUserById(Guid id)
+    {
+        var user = await _appDbContext.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(user);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateUser(Guid id, UserRequest request)
+    {
+        var user = await _appDbContext.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        user.UpdateEmail(Email.Create(request.Email));
+        user.UpdatePassword(Password.Create(request.Password));
+
+        var existingUser = _appDbContext.Users.AsEnumerable().FirstOrDefault(u => u.Email.Value == request.Email);
+        if (existingUser != null)
+        {
+            return BadRequest("El email ya existe.");
+        }
+
+        await _appDbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<User>> DeleteUser(Guid id)
+    {
+        var user = await _appDbContext.Users.FindAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+        
+        _appDbContext.Users.Remove(user);
+
+        await _appDbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
 }
