@@ -22,11 +22,11 @@ public class UserController : ControllerBase
     {
         User user = new User(Guid.NewGuid(), Email.Create(request.Email), Password.Create(request.Password));
 
-        //var existingUser = _appDbContext.Users.FirstOrDefault(u => u.Email.Value == request.Email);
-        //if (existingUser != null)
-        //{
-        //    return BadRequest("El email ya existe.");
-        //}
+        var existingUser = _appDbContext.Users.AsEnumerable().FirstOrDefault(u => u.Email.Value == request.Email);
+        if (existingUser != null)
+        {
+            return BadRequest("El email ya existe.");
+        }
 
         _appDbContext.Users.Add(user);
         await _appDbContext.SaveChangesAsync();
